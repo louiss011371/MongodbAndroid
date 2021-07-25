@@ -1,5 +1,6 @@
 package com.example.mongodbandroid;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post obj = postList.get(position);
         holder.stopIdTextView.setText(obj.getStopID());
+
+        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View view) {
+                                                    String itemId = obj.getId();
+                                                  Intent intent = new Intent();
+                                                  intent.setClassName("com.example.mongodbandroid","com.example.mongodbandroid.UpdatePostActivity");
+                                                  intent.putExtra("stopObjId", itemId);
+                                                  intent.putExtra("stopId", obj.getStopID());
+
+                                                  System.out.println("putStringExtra stopObjId" +itemId );
+                                                  System.out.println("putStringExtra stopId" + obj.getStopID() );
+                                                  view.getContext().startActivity(intent);
+                                              }
+                                          }
+        );
     }
 
     @Override

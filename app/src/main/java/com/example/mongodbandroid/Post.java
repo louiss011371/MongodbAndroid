@@ -11,6 +11,11 @@ public class Post {
     @SerializedName("STOP_ID")
     private String stopId;
 
+    public Post(String _id, String stopIdText) {
+        this.id = _id;
+        this.stopId = stopIdText;
+    }
+
     public String getId() {
         return id;
     }
