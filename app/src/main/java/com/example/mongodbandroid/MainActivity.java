@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private PostAdapter postViewAdapter;
     private Button createPostButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Toast.makeText(this, "load data", Toast.LENGTH_SHORT).show();
         createPostButton = findViewById(R.id.createPostBtn);
+        callAPI();
         createPostButton.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
                                                 }
                                             }
         );
-        callAPI();
     }
 
     private void callAPI() {
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void displayPostList(List<Post> postList) {
-        postListRecyclerView = findViewById(R.id.postListReyclerView);
+        postListRecyclerView = findViewById(R.id.postListRecyclerView);
         postListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         postListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        postViewAdapter = new PostAdapter(postList);
+        postViewAdapter = new PostAdapter(this, postList);
         postListRecyclerView.setAdapter(postViewAdapter);
     }
 }
