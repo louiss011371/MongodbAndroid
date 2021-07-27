@@ -14,8 +14,8 @@ public interface API {
 
     @GET("/posts")
     Call<List<Post>> getAllPostData();
-//    @DELETE("/posts/{postId}")
-//    Call<POST> deletePostData(@Path("postId") String postId);
+    @DELETE("/posts/{postId}")
+    Call<Post> deletePostData(@Path("postId") String postId);
     @POST("/posts")
     Call<Post> createPostItem(@Body Post post);
     @PATCH("/posts/{postId}")
