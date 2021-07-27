@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     public RecyclerView postListRecyclerView;
     private PostAdapter postViewAdapter;
+    private Button createPostButton;
 
 
     @Override
@@ -27,6 +30,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        createPostButton = findViewById(R.id.createPostBtn);
+        createPostButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Intent intent = new Intent();
+                                                    intent.setClassName("com.example.mongodbandroid","com.example.mongodbandroid.CreatePostActivity");
+                                                    startActivity(intent);
+                                                }
+                                            }
+        );
         callAPI();
     }
 
@@ -48,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 if(response.code() != 200){
                     System.out.println("response code = " + response.code());
                 }else{
-                   // System.out.println("response success = " + response.body().get(0).getStopID());
                     displayPostList(response.body());
                 }
             }
