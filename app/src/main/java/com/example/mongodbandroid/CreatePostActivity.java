@@ -2,12 +2,12 @@ package com.example.mongodbandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.List;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +37,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         .addConverterFactory(GsonConverterFactory.create())
                                                         .build();
                                                 API request = retrofit.create(API.class);
+                                                // mongodb item id 是自動創建的 留空可
                                                 Post postData = new Post("",stopIdText);
                                                 Call<Post> create = request.createPostItem(postData);
                                                 create.enqueue(new Callback<Post>() {
@@ -46,7 +47,11 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         if(response.code() != 200){
                                                             System.out.println("response code = " + response.code());
                                                         }else{
+                                                            Intent intent = new Intent();
                                                             System.out.println("createStop id successful " + response.body());
+                                                            Toast.makeText(getApplication(),"create data successful", Toast.LENGTH_SHORT).show();
+                                                            intent.setClassName("com.example.mongodbandroid","com.example.mongodbandroid.MainActivity");
+                                                            startActivity(intent);
                                                         }
                                                     }
 

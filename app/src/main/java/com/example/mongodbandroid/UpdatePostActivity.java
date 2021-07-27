@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +24,6 @@ public class UpdatePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_post);
-
         updateButton = findViewById(R.id.updateBtn);
         stopIdTextView = findViewById(R.id.stopIdTextView);
 
@@ -52,6 +52,9 @@ public class UpdatePostActivity extends AppCompatActivity {
                             System.out.println("response code = " + response.code());
                         } else {
                             System.out.println("updateStop id successful " + response.body());
+                            Toast.makeText(getApplication(),"update data successful", Toast.LENGTH_SHORT).show();
+                            intent.setClassName("com.example.mongodbandroid","com.example.mongodbandroid.MainActivity");
+                            startActivity(intent);
                         }
                     }
 
@@ -63,6 +66,5 @@ public class UpdatePostActivity extends AppCompatActivity {
             }
 
         });
-
     }
 }
