@@ -12,10 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> postList;
+    private MainActivity mainActivity;
 
-    PostAdapter(List<Post> postList) {
+    PostAdapter(MainActivity mainActivity, List<Post> postList) {
+        this.mainActivity = mainActivity;
         this.postList = postList;
     }
 
@@ -35,7 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View view) {
-                                                    String itemId = obj.getId();
+                                                  String itemId = obj.getId();
                                                   Intent intent = new Intent();
                                                   intent.setClassName("com.example.mongodbandroid","com.example.mongodbandroid.UpdatePostActivity");
                                                   intent.putExtra("stopObjId", itemId);
@@ -47,6 +55,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                                               }
                                           }
         );
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String itemId = obj.getId();
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://10.0.2.2:3000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                API request = retrofit.create(API.class);
+                Call<Post> deletePostDataCall = request.deletePostData(itemId);
+                deletePostDataCall.enqueue(new Callback<Post>() {
+
+                    @Override
+                    public void onResponse(Call<Post> call, Response<Post> response) {
+                        if(response.code() != 200){
+                            System.out.println("response code = " + response.code());
+                        }else{
+                            System.out.println("delete stop id successful");
+                            // item被刪除後刷新recyclerview
+                            mainActivity.recreate();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Post> call, Throwable t) {
+                        System.out.println("response failed = " + t.toString());
+                    }
+                });
+            }
+        });
     }
 
     @Override
